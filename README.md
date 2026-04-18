@@ -109,6 +109,3 @@ git remote add origin https://github.com/your-username/your-repo-name.git
 git push -u origin main
 ```
 
-## Submission Note
-
-For screenshots, recording, or viva, run the backend with a real MongoDB connection so the project demonstrates persistent data clearly.
