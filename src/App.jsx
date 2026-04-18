@@ -107,6 +107,9 @@ function App() {
   const completionRate = taskStats.total
     ? Math.round((taskStats.Completed / taskStats.total) * 100)
     : 0
+  const projectIntensity = projects.length
+    ? Math.min(100, Math.round((tasks.length / Math.max(projects.length, 1)) * 28))
+    : 0
 
   async function checkBackendHealth() {
     try {
@@ -290,6 +293,19 @@ function App() {
             <span>Live status updates</span>
             <span>MongoDB connected</span>
           </div>
+
+          <div className="hero__mini-grid">
+            <article className="hero-mini-card">
+              <span>Execution tempo</span>
+              <strong>{projectIntensity}%</strong>
+              <p>Measures how active the current workspace feels based on tasks per project.</p>
+            </article>
+            <article className="hero-mini-card hero-mini-card--accent">
+              <span>Active delivery</span>
+              <strong>{taskStats['In Progress']}</strong>
+              <p>Tasks currently moving across the board right now.</p>
+            </article>
+          </div>
         </div>
 
         <aside className="hero__panel">
@@ -370,6 +386,71 @@ function App() {
         <article className="metric-card">
           <span>Active Filter</span>
           <strong>{taskStatusFilter}</strong>
+        </article>
+      </section>
+
+      <section className="spotlight-grid" aria-label="Project spotlight">
+        <article className="spotlight-card spotlight-card--primary">
+          <div className="spotlight-card__header">
+            <div>
+              <p className="eyebrow">Project Spotlight</p>
+              <h2>{selectedProject?.name || 'No project selected yet'}</h2>
+            </div>
+            <span className="spotlight-badge">
+              {selectedProject ? `${completionRate}% shipped` : 'Waiting'}
+            </span>
+          </div>
+
+          <p className="spotlight-copy">
+            {selectedProject?.description ||
+              'Pick a project from the left column to turn this dashboard into a focused delivery cockpit.'}
+          </p>
+
+          <div className="progress-track" aria-label="Completion progress">
+            <span style={{ width: `${completionRate}%` }} />
+          </div>
+
+          <div className="spotlight-metrics">
+            <article>
+              <span>Total tasks</span>
+              <strong>{taskStats.total}</strong>
+            </article>
+            <article>
+              <span>Pending</span>
+              <strong>{taskStats.Pending}</strong>
+            </article>
+            <article>
+              <span>Done</span>
+              <strong>{taskStats.Completed}</strong>
+            </article>
+          </div>
+        </article>
+
+        <article className="spotlight-card spotlight-card--secondary">
+          <p className="eyebrow">Flow Balance</p>
+          <div className="flow-stack">
+            <div className="flow-row">
+              <span>Pending</span>
+              <strong>{taskStats.Pending}</strong>
+            </div>
+            <div className="flow-bar">
+              <span style={{ width: `${taskStats.total ? (taskStats.Pending / taskStats.total) * 100 : 0}%` }} />
+            </div>
+            <div className="flow-row">
+              <span>In Progress</span>
+              <strong>{taskStats['In Progress']}</strong>
+            </div>
+            <div className="flow-bar flow-bar--progress">
+              <span style={{ width: `${taskStats.total ? (taskStats['In Progress'] / taskStats.total) * 100 : 0}%` }} />
+            </div>
+            <div className="flow-row">
+              <span>Completed</span>
+              <strong>{taskStats.Completed}</strong>
+            </div>
+            <div className="flow-bar flow-bar--complete">
+              <span style={{ width: `${taskStats.total ? (taskStats.Completed / taskStats.total) * 100 : 0}%` }} />
+            </div>
+          </div>
         </article>
       </section>
 
