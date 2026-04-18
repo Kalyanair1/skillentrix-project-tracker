@@ -4,7 +4,10 @@ import AddTask from './components/AddTask.jsx'
 import ProjectList from './components/ProjectList.jsx'
 import TaskList from './components/TaskList.jsx'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
+  (import.meta.env.DEV
+    ? '/api'
+    : 'https://skillentrix-project-tracker.onrender.com/api')
 const STATUS_FILTERS = ['All', 'Pending', 'In Progress', 'Completed']
 
 async function readResponse(response) {
